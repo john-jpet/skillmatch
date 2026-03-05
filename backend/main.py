@@ -71,15 +71,19 @@ async def analyze_posting(request: Request, posting: JobPosting):
 @app.post("/match")
 @limiter.limit("1000/day")
 async def match(request: Request, request_body: MatchRequest):
-    resume_set = set(s.lower() for s in request_body.resume_skills)
-    jd_set = set(s.lower() for s in request_body.jd_skills)
-    
-    matched = resume_set & jd_set
-    missing = jd_set - resume_set
-    fit_score = len(matched) / len(jd_set) if jd_set else 0
+    resume_map = {s.lower(): s for s in request_body.resume_skills}
+    jd_map = {s.lower(): s for s in request_body.jd_skills}
+
+    resume_set = set(resume_map.keys())
+    jd_set = set(jd_map.keys())
+
+    matched_keys = resume_set & jd_set
+    missing_keys = jd_set - resume_set
+
+    fit_score = len(matched_keys) / len(jd_set) if jd_set else 0
 
     return {
         "fit_score": round(fit_score, 2),
-        "matched": list(matched),
-        "missing": list(missing)
+        "matched": [jd_map[k] for k in matched_keys],
+        "missing": [jd_map[k] for k in missing_keys]
     }
