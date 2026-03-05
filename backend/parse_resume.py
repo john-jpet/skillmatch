@@ -3,6 +3,11 @@ import pdfplumber
 import json
 import os
 from skills import load_taxonomy
+from docx import Document
+
+def extract_text_from_docx(path):
+    doc = Document(path)
+    return "\n".join(paragraph.text for paragraph in doc.paragraphs)
 
 def extract_text_from_pdf(path):
     with pdfplumber.open(path) as pdf:
