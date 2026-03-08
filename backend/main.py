@@ -6,7 +6,7 @@ from slowapi.errors import RateLimitExceeded
 from pydantic import BaseModel
 import tempfile
 import os
-from parse_resume import extract_text_from_pdf, extract_skills
+from parse_resume import extract_text_from_pdf, extract_text_from_docx, extract_skills
 from parse_jd import extract_skills_from_jd
 from skills import load_taxonomy
 

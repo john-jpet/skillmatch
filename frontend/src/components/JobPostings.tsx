@@ -3,9 +3,10 @@ import { useState } from "react"
 interface JobPostingsProps {
   onAnalyze: (postings: string[]) => void
   loading: boolean
+  hasSkills: boolean
 }
 
-export default function JobPostings({ onAnalyze, loading }: JobPostingsProps) {
+export default function JobPostings({ onAnalyze, loading, hasSkills }: JobPostingsProps) {
   const [postings, setPostings] = useState<string[]>([""])
 
   function updatePosting(index: number, value: string) {
@@ -15,9 +16,7 @@ export default function JobPostings({ onAnalyze, loading }: JobPostingsProps) {
   }
 
   function addPosting() {
-    if (postings.length < 5) {
-      setPostings([...postings, ""])
-    }
+    if (postings.length < 5) setPostings([...postings, ""])
   }
 
   function removePosting(index: number) {
@@ -29,45 +28,127 @@ export default function JobPostings({ onAnalyze, loading }: JobPostingsProps) {
     if (filled.length > 0) onAnalyze(filled)
   }
 
+  const canAnalyze = !loading && hasSkills && postings.some(p => p.trim().length > 0)
+  const filledCount = postings.filter(p => p.trim().length > 0).length
+
   return (
-    <div className="mt-8">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Job Postings</h2>
-      {postings.map((posting, index) => (
-        <div key={index} className="mb-4">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-sm text-gray-600">Posting {index + 1}</span>
-            {postings.length > 1 && (
-              <button
-                onClick={() => removePosting(index)}
-                className="text-red-400 hover:text-red-600 text-sm"
-              >
-                Remove
-              </button>
-            )}
-          </div>
-          <textarea
-            value={posting}
-            onChange={e => updatePosting(index, e.target.value)}
-            placeholder="Paste job posting here..."
-            className="w-full h-32 border border-gray-300 rounded px-3 py-2 text-sm resize-none"
-          />
-        </div>
-      ))}
-      <div className="flex gap-3 mt-2">
-        {postings.length < 5 && (
-          <button
-            onClick={addPosting}
-            className="text-blue-600 hover:text-blue-800 text-sm"
+    <div className="card p-5">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h3
+            className="font-head font-semibold text-sm"
+            style={{ color: "var(--text-hi)", letterSpacing: "-0.02em" }}
           >
-            + Add another posting
-          </button>
-        )}
+            Job Descriptions
+          </h3>
+          <p className="text-xs mt-0.5" style={{ color: "var(--text-lo)" }}>
+            Paste one or more role descriptions to compare against your skills
+          </p>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          {filledCount > 0 && (
+            <span
+              className="font-mono text-xs px-2 py-0.5 rounded"
+              style={{
+                background: "var(--cyan-soft)",
+                color: "var(--cyan)",
+                border: "1px solid var(--cyan-border)",
+              }}
+            >
+              {filledCount}/{postings.length}
+            </span>
+          )}
+          {postings.length < 5 && (
+            <button
+              onClick={addPosting}
+              className="text-xs font-semibold transition-colors duration-150"
+              style={{ color: "var(--text-lo)" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "var(--cyan)")}
+              onMouseLeave={e => (e.currentTarget.style.color = "var(--text-lo)")}
+            >
+              + Add role
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Textareas */}
+      <div className="space-y-3">
+        {postings.map((posting, index) => (
+          <div key={index} className="anim-fadeIn">
+            {postings.length > 1 && (
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-medium" style={{ color: "var(--text-lo)" }}>
+                  Role {index + 1}
+                </span>
+                <button
+                  onClick={() => removePosting(index)}
+                  className="text-xs transition-colors duration-150"
+                  style={{ color: "var(--text-lo)" }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "var(--red)")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "var(--text-lo)")}
+                >
+                  remove
+                </button>
+              </div>
+            )}
+            <textarea
+              value={posting}
+              onChange={e => updatePosting(index, e.target.value)}
+              placeholder="Paste a job description here…"
+              className="dark-input w-full resize-none"
+              style={{ height: "140px", padding: "12px 14px", lineHeight: "1.6" }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* ── Run Match CTA ── */}
+      <div className="mt-6">
         <button
           onClick={handleAnalyze}
-          disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm disabled:opacity-50"
+          disabled={!canAnalyze}
+          className="btn-primary"
+          style={canAnalyze ? {
+            background: "linear-gradient(135deg, var(--cyan), var(--violet))",
+            color: "var(--bg)",
+            boxShadow: "0 0 24px var(--cyan-glow), 0 4px 16px rgba(0,0,0,0.2)",
+          } : undefined}
+          onMouseEnter={e => {
+            if (canAnalyze) {
+              const el = e.currentTarget as HTMLElement
+              el.style.filter = "brightness(1.08)"
+              el.style.boxShadow = "0 0 36px var(--cyan-glow), 0 6px 20px rgba(0,0,0,0.25)"
+              el.style.transform = "translateY(-1px)"
+            }
+          }}
+          onMouseLeave={e => {
+            if (canAnalyze) {
+              const el = e.currentTarget as HTMLElement
+              el.style.filter = ""
+              el.style.boxShadow = "0 0 24px var(--cyan-glow), 0 4px 16px rgba(0,0,0,0.2)"
+              el.style.transform = ""
+            }
+          }}
         >
-          {loading ? "Analyzing..." : "Analyze Postings"}
+          {loading ? (
+            <>
+              <span
+                className="w-4 h-4 rounded-full border-2 animate-spin shrink-0"
+                style={{ borderTopColor: "transparent" }}
+              />
+              Matching skills…
+            </>
+          ) : (
+            <>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Run Match
+            </>
+          )}
         </button>
       </div>
     </div>

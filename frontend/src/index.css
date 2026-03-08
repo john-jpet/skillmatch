@@ -1,1 +1,343 @@
+/* ─── Fonts: Syne (headings) · Manrope (body) · JetBrains Mono (tags) ─── */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Manrope:wght@400;500;600&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap');
 @import "tailwindcss";
+
+/* ─── Dark theme tokens (default) ──────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --bg:           #0A0B14;
+  --sidebar:      #07080F;
+  --panel:        #0B0C1A;
+  --surface:      #0F1120;
+  --lifted:       #141628;
+
+  /* Borders */
+  --border:       #1A1D35;
+  --border-hi:    #252848;
+
+  /* Text */
+  --text-hi:      #ECEAF8;
+  --text:         #7E7CA5;
+  --text-lo:      #3C3B5A;
+
+  /* Cyan — primary accent */
+  --cyan:         #22D3EE;
+  --cyan-soft:    rgba(34, 211, 238, 0.07);
+  --cyan-glow:    rgba(34, 211, 238, 0.20);
+  --cyan-border:  rgba(34, 211, 238, 0.22);
+
+  /* Violet — secondary accent */
+  --violet:       #A78BFA;
+  --violet-soft:  rgba(167, 139, 250, 0.07);
+  --violet-glow:  rgba(167, 139, 250, 0.20);
+  --violet-border:rgba(167, 139, 250, 0.22);
+
+  /* Semantic: green / amber / red */
+  --green:        #34D399;
+  --green-soft:   rgba(52, 211, 153, 0.08);
+  --green-border: rgba(52, 211, 153, 0.22);
+
+  --amber:        #F59E0B;
+  --amber-soft:   rgba(245, 158, 11, 0.08);
+  --amber-border: rgba(245, 158, 11, 0.22);
+
+  --red:          #F87171;
+  --red-soft:     rgba(248, 113, 113, 0.08);
+  --red-border:   rgba(248, 113, 113, 0.22);
+
+  /* Shadows */
+  --shadow-sm:    0 4px 12px rgba(0, 0, 0, 0.30);
+  --shadow-md:    0 10px 32px rgba(0, 0, 0, 0.40);
+  --shadow-lg:    0 12px 40px rgba(0, 0, 0, 0.60);
+}
+
+/* ─── Light theme tokens ────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:           #F0F2FC;
+  --sidebar:      #E8EAF8;
+  --panel:        #EEF0FA;
+  --surface:      #FFFFFF;
+  --lifted:       #F5F6FF;
+
+  --border:       #D8DBF0;
+  --border-hi:    #BFC4E8;
+
+  --text-hi:      #1A1B32;
+  --text:         #565880;
+  --text-lo:      #9EA0C5;
+
+  --cyan:         #0891B2;
+  --cyan-soft:    rgba(8, 145, 178, 0.08);
+  --cyan-glow:    rgba(8, 145, 178, 0.18);
+  --cyan-border:  rgba(8, 145, 178, 0.22);
+
+  --violet:       #7C3AED;
+  --violet-soft:  rgba(124, 58, 237, 0.07);
+  --violet-glow:  rgba(124, 58, 237, 0.18);
+  --violet-border:rgba(124, 58, 237, 0.22);
+
+  --green:        #059669;
+  --green-soft:   rgba(5, 150, 105, 0.08);
+  --green-border: rgba(5, 150, 105, 0.22);
+
+  --amber:        #D97706;
+  --amber-soft:   rgba(217, 119, 6, 0.08);
+  --amber-border: rgba(217, 119, 6, 0.22);
+
+  --red:          #DC2626;
+  --red-soft:     rgba(220, 38, 38, 0.08);
+  --red-border:   rgba(220, 38, 38, 0.22);
+
+  --shadow-sm:    0 2px 8px rgba(80, 80, 130, 0.10);
+  --shadow-md:    0 4px 16px rgba(80, 80, 130, 0.12);
+  --shadow-lg:    0 8px 24px rgba(80, 80, 130, 0.16);
+}
+
+/* ─── Base reset ────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+
+body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Dot grid background ───────────────────────────────────────────────── */
+.dot-grid {
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* ─── Typography helpers ────────────────────────────────────────────────── */
+.font-head { font-family: 'Syne', system-ui, sans-serif; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ─── Card ──────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+.card:hover {
+  border-color: var(--border-hi);
+  box-shadow: 0 0 0 1px var(--cyan-soft), var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* ─── Skill tags ─────────────────────────────────────────────────────────── */
+/* No X icon — hover → red signals delete, click removes */
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: -0.01em;
+  background: var(--cyan-soft);
+  color: var(--cyan);
+  border: 1px solid var(--cyan-border);
+  transition: background 0.13s ease, color 0.13s ease,
+              border-color 0.13s ease, transform 0.13s ease, box-shadow 0.13s ease;
+}
+.skill-tag:hover {
+  background: var(--red-soft);
+  color: var(--red);
+  border-color: var(--red-border);
+  transform: scale(1.05);
+  box-shadow: 0 2px 10px var(--red-soft);
+}
+
+/* ─── Result tags (inside InsightPanel) ─────────────────────────────────── */
+.result-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: -0.01em;
+  cursor: default;
+  transition: transform 0.12s ease;
+}
+.result-tag:hover { transform: scale(1.04); }
+.result-tag--matched {
+  background: var(--green-soft);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+}
+.result-tag--missing {
+  background: var(--red-soft);
+  color: var(--red);
+  border: 1px solid var(--red-border);
+}
+
+/* ─── Nav item ──────────────────────────────────────────────────────────── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  border-radius: 7px;
+  width: 100%;
+  text-align: left;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-lo);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+.nav-item:hover {
+  background: var(--cyan-soft);
+  color: var(--text);
+}
+.nav-item.active {
+  background: var(--cyan-soft);
+  color: var(--cyan);
+  border-color: var(--cyan-border);
+}
+
+/* ─── Dark input / textarea ─────────────────────────────────────────────── */
+.dark-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-hi);
+  border-radius: 7px;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.14s ease, box-shadow 0.14s ease;
+}
+.dark-input::placeholder { color: var(--text-lo); }
+.dark-input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px var(--cyan-soft);
+}
+
+/* ─── Skeleton shimmer ──────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--lifted) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: 3px;
+}
+
+/* ─── Theme toggle ──────────────────────────────────────────────────────── */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  gap: 2px;
+}
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--text-lo);
+  background: transparent;
+}
+.theme-toggle-btn.active {
+  background: var(--surface);
+  color: var(--text-hi);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ─── Primary CTA button ────────────────────────────────────────────────── */
+.btn-primary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 9px;
+  /* 1px transparent border reserves space so :disabled border doesn't shift layout */
+  border: 1px solid transparent;
+  font-family: 'Syne', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: filter 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, background 0.18s ease;
+}
+.btn-primary:disabled {
+  cursor: not-allowed;
+  background: var(--surface) !important;
+  color: var(--text-lo) !important;
+  box-shadow: none !important;
+  border: 1px solid var(--border) !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+/* ─── Orb pulse animation (landing page) ───────────────────────────────── */
+@keyframes orb-pulse {
+  0%, 100% { opacity: 0.40; }
+  50%      { opacity: 0.72; }
+}
+.orb-pulse {
+  /* Animate opacity only — avoids the repaint caused by transform + blur */
+  animation: orb-pulse 8s ease-in-out infinite;
+  will-change: opacity;
+  transform: translateZ(0); /* promote to its own compositor layer */
+}
+
+/* ─── Keyframe animations ───────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes chipPop {
+  0%   { opacity: 0; transform: scale(0.68); }
+  65%  { transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.anim-fadeUp     { animation: fadeUp      0.44s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-fadeIn     { animation: fadeIn      0.20s ease both; }
+.anim-chipPop    { animation: chipPop     0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.anim-slideRight { animation: slideRight  0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-lo); }
