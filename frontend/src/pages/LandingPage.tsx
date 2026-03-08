@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
+import SkillMatchLogo from "../components/SkillMatchLogo"
 
 export default function LandingPage() {
   const navigate = useNavigate()
@@ -69,50 +70,10 @@ export default function LandingPage() {
       {/* ── Content (above orbs) ─────────────────────────────────────────── */}
       <div className="relative z-10 flex flex-col items-center text-center max-w-lg w-full">
 
-        {/* Logo mark */}
-        <div
-          className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 anim-fadeUp"
-          style={{
-            background: "linear-gradient(135deg, var(--cyan), var(--violet))",
-            boxShadow: "0 0 40px var(--cyan-glow), 0 8px 24px rgba(0,0,0,0.3)",
-            animationDelay: "0ms",
-          }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-            style={{ stroke: "var(--bg)" }}
-            strokeWidth={2.5}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
+        {/* Wordmark logo */}
+        <div className="mb-4 anim-fadeUp" style={{ animationDelay: "0ms" }}>
+          <SkillMatchLogo expanded={true} size="lg" />
         </div>
-
-        {/* Wordmark */}
-        <h1
-          className="font-head font-bold anim-fadeUp"
-          style={{
-            fontSize: "clamp(42px, 8vw, 64px)",
-            letterSpacing: "-0.05em",
-            lineHeight: 1,
-            color: "var(--text-hi)",
-            animationDelay: "60ms",
-          }}
-        >
-          Skill
-          <span
-            style={{
-              background: "linear-gradient(135deg, var(--cyan), var(--violet))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            Match
-          </span>
-        </h1>
 
         {/* Tagline */}
         <p
@@ -122,7 +83,7 @@ export default function LandingPage() {
             color: "var(--text-lo)",
             lineHeight: 1.6,
             maxWidth: "360px",
-            animationDelay: "120ms",
+            animationDelay: "60ms",
           }}
         >
           Upload your resume. Paste a job description.
@@ -133,7 +94,7 @@ export default function LandingPage() {
         {/* Feature pills */}
         <div
           className="flex flex-wrap justify-center gap-2 mt-6 anim-fadeUp"
-          style={{ animationDelay: "180ms" }}
+          style={{ animationDelay: "120ms" }}
         >
           {["Resume parsing", "Skill matching", "Gap analysis", "Multi-role compare"].map(f => (
             <span
@@ -160,7 +121,7 @@ export default function LandingPage() {
             boxShadow: "0 0 28px var(--cyan-glow), 0 4px 16px rgba(0,0,0,0.25)",
             fontSize: "15px",
             padding: "12px 32px",
-            animationDelay: "240ms",
+            animationDelay: "180ms",
             transition: "filter 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease",
           }}
           onMouseEnter={e => {
@@ -176,24 +137,13 @@ export default function LandingPage() {
             el.style.transform = ""
           }}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2.5}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
           Get Started
         </button>
 
         {/* Footer note */}
         <p
           className="mt-8 font-mono text-[11px] anim-fadeUp"
-          style={{ color: "var(--text-lo)", animationDelay: "300ms" }}
+          style={{ color: "var(--text-lo)", animationDelay: "240ms" }}
         >
           36,944-skill taxonomy · runs locally · no data stored
         </p>

@@ -5,6 +5,8 @@ import SkillTags from "../components/SkillTags"
 import SkillPicker from "../components/SkillPicker"
 import JobPostings from "../components/JobPostings"
 import InsightPanel from "../components/InsightPanel"
+import SkillMatchLogo from "../components/SkillMatchLogo"
+import { useWindowWidth } from "../hooks/useWindowWidth"
 
 type Theme = "dark" | "light"
 
@@ -469,30 +471,15 @@ function HistoryPanel({ history }: { history: Record<string, MatchResult> }) {
 
 /* ─── Sidebar ───────────────────────────────────────────────────────────── */
 function Sidebar({ active, onNav }: { active: string; onNav: (id: string) => void }) {
+  const width = useWindowWidth()
   return (
     <aside
       className="w-52 shrink-0 flex flex-col"
       style={{ background: "var(--sidebar)", borderRight: "1px solid var(--border)" }}
     >
       {/* Brand */}
-      <div className="px-5 py-5" style={{ borderBottom: "1px solid var(--border)" }}>
-        <div className="flex items-center gap-2.5">
-          <div
-            className="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
-            style={{ background: "linear-gradient(135deg, var(--cyan), var(--violet))" }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24"
-              style={{ stroke: "var(--bg)" }} strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <span
-            className="font-head font-bold text-sm"
-            style={{ color: "var(--text-hi)", letterSpacing: "-0.02em" }}
-          >
-            SkillMatch
-          </span>
-        </div>
+      <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
+        <SkillMatchLogo expanded={width >= 1024} size="sm" />
       </div>
 
       {/* Nav section label */}
