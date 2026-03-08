@@ -4,8 +4,11 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from pydantic import BaseModel
+from dotenv import load_dotenv
 import tempfile
 import os
+
+load_dotenv()
 from parse_resume import extract_text_from_pdf, extract_text_from_docx, extract_skills
 from parse_jd import extract_skills_from_jd
 from skills import load_taxonomy
