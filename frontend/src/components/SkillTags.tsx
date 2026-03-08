@@ -7,16 +7,16 @@ export default function SkillTags({ skills, onRemove }: SkillTagsProps) {
   if (skills.length === 0) return null
 
   return (
-    <div className="flex flex-wrap gap-2 mt-4">
+    <div className="flex flex-wrap gap-2">
       {skills.map(skill => (
         <span
           key={skill}
-          className="flex items-center gap-1 bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full"
+          className="flex items-center gap-1 bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs px-3 py-1.5 rounded-full"
         >
           {skill}
           <button
             onClick={() => onRemove(skill)}
-            className="text-blue-500 hover:text-blue-900 font-bold"
+            className="text-indigo-300 hover:text-indigo-700 font-bold ml-0.5 leading-none"
           >
             ×
           </button>

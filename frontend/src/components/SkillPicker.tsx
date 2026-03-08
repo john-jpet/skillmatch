@@ -40,21 +40,21 @@ export default function SkillPicker({ onAdd, existingSkills }: SkillPickerProps)
   }
 
   return (
-    <div className="mt-4">
+    <div className="relative">
       <input
         type="text"
         value={query}
         onChange={handleSearch}
-        placeholder="Search and add skills..."
-        className="border border-gray-300 rounded px-3 py-2 w-64"
+        placeholder="Search skills..."
+        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-transparent placeholder-slate-300"
       />
       {results.length > 0 && (
-        <ul className="border border-gray-200 rounded mt-1 w-64 bg-white shadow">
+        <ul className="absolute z-10 w-full border border-slate-200 rounded-lg mt-1 bg-white shadow-lg overflow-hidden">
           {results.map(skill => (
             <li
               key={skill}
               onClick={() => handleAdd(skill)}
-              className="px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm"
+              className="px-3 py-2 hover:bg-indigo-50 hover:text-indigo-700 cursor-pointer text-sm text-slate-700 transition-colors"
             >
               {skill}
             </li>
