@@ -56,6 +56,8 @@ export default function LandingPage() {
   useEffect(() => {
     const saved = localStorage.getItem("sm-theme") || "dark"
     document.documentElement.setAttribute("data-theme", saved)
+    // Wake up Render backend on page load to minimize cold start delay
+    fetch(`${import.meta.env.VITE_API_URL ?? "http://localhost:8080"}/`).catch(() => {})
   }, [])
 
   return (
