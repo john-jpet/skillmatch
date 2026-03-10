@@ -657,11 +657,6 @@ export default function AppPage() {
   })
 
   useEffect(() => {
-    const today = new Date().toISOString().slice(0, 10)
-    localStorage.setItem("sm-analyze-count", JSON.stringify({ date: today, count: analyzeCount }))
-  }, [analyzeCount])
-
-  useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme)
     localStorage.setItem("sm-theme", theme)
   }, [theme])
@@ -689,6 +684,11 @@ export default function AppPage() {
       return date === today ? count : 0
     } catch { return 0 }
   })
+
+  useEffect(() => {
+    const today = new Date().toISOString().slice(0, 10)
+    localStorage.setItem("sm-analyze-count", JSON.stringify({ date: today, count: analyzeCount }))
+  }, [analyzeCount])
 
   function removeSkill(skill: string) {
     setSkills(prev => prev.filter(s => s !== skill))
