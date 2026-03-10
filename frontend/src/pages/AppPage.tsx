@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react"
+
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080"
 import type { MatchResult } from "../types"
 import ResumeUpload from "../components/ResumeUpload"
 import SkillTags from "../components/SkillTags"
@@ -692,7 +694,7 @@ export default function AppPage() {
       const newEntries: Record<string, MatchResult> = {}
 
       for (const posting of postings) {
-        const jdRes = await fetch("http://localhost:8080/analyze-posting", {
+        const jdRes = await fetch(`${API_URL}/analyze-posting`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: posting }),
@@ -716,7 +718,7 @@ export default function AppPage() {
           continue
         }
 
-        const matchRes = await fetch("http://localhost:8080/match", {
+        const matchRes = await fetch(`${API_URL}/match`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ resume_skills: skills, jd_skills: jdData.skills }),

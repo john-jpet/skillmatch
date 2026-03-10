@@ -18,9 +18,11 @@ app = FastAPI()
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -39,7 +41,7 @@ def root():
     return {"status": "SkillMatch API is running"}
 
 @app.post("/upload-resume")
-@limiter.limit("1000/day")
+@limiter.limit("10/day")
 async def upload_resume(request: Request, file: UploadFile = File(...)):
     if not file.filename.endswith(".pdf") and not file.filename.endswith(".docx"):
         raise HTTPException(status_code=400, detail="Only PDF and DOCX files are supported")
@@ -63,7 +65,7 @@ async def upload_resume(request: Request, file: UploadFile = File(...)):
     return {"skills": skills}
 
 @app.post("/analyze-posting")
-@limiter.limit("1000/day")
+@limiter.limit("10/day")
 async def analyze_posting(request: Request, posting: JobPosting):
     if not posting.text.strip():
         raise HTTPException(status_code=400, detail="Job posting text cannot be empty")
@@ -72,7 +74,7 @@ async def analyze_posting(request: Request, posting: JobPosting):
     return {"skills": skills}
 
 @app.post("/match")
-@limiter.limit("1000/day")
+@limiter.limit("10/day")
 async def match(request: Request, request_body: MatchRequest):
     resume_map = {s.lower(): s for s in request_body.resume_skills}
     jd_map = {s.lower(): s for s in request_body.jd_skills}
