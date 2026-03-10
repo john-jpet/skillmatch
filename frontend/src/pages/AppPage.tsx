@@ -675,6 +675,7 @@ export default function AppPage() {
   const [analyzing, setAnalyzing] = useState(false)
   const [results, setResults] = useState<MatchResult[]>([])
   const [history, setHistory] = useState<Record<string, MatchResult>>({})
+  const [globalError, setGlobalError] = useState("")
   const [analyzeCount, setAnalyzeCount] = useState<number>(() => {
     const today = new Date().toISOString().slice(0, 10)
     const stored = localStorage.getItem("sm-analyze-count")
@@ -714,7 +715,7 @@ export default function AppPage() {
         })
 
         if (!jdRes.ok) {
-          if (jdRes.status === 429) throw new Error("Rate limit reached. Try again tomorrow.")
+          if (jdRes.status === 429) throw new Error("429 rate limit exceeded")
           throw new Error("Failed to analyze posting")
         }
 
@@ -751,6 +752,12 @@ export default function AppPage() {
       matchResults.sort((a, b) => b.fit_score - a.fit_score)
       setResults(matchResults)
       setHistory(prev => ({ ...prev, ...newEntries }))
+    } catch (err: any) {
+      if (err.message?.includes("429") || err.message?.includes("rate limit")) {
+        setGlobalError("Daily limit reached (10 analyses/day). Try again tomorrow.")
+      } else {
+        setGlobalError(err.message || "Something went wrong. Please try again.")
+      }
     } finally {
       setAnalyzing(false)
       setAnalyzeCount(prev => prev + 1)
@@ -798,7 +805,7 @@ export default function AppPage() {
         </main>
 
         {/* Insight panel */}
-        <InsightPanel results={results} analyzing={analyzing} />
+        <InsightPanel results={results} analyzing={analyzing} globalError={globalError} />
       </div>
     </div>
   )

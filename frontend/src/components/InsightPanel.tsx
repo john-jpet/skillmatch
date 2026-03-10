@@ -4,6 +4,7 @@ import type { MatchResult } from "../types"
 interface InsightPanelProps {
   results: MatchResult[]
   analyzing: boolean
+  globalError?: string
 }
 
 /* ─── Score ring (draws from 0 on mount) ───────────────────────────────── */
@@ -166,7 +167,7 @@ function ResultCard({ result, rank, delay }: { result: MatchResult; rank: number
 }
 
 /* ─── Panel ────────────────────────────────────────────────────────────── */
-export default function InsightPanel({ results, analyzing }: InsightPanelProps) {
+export default function InsightPanel({ results, analyzing, globalError }: InsightPanelProps) {
   return (
     <aside
       className="w-80 shrink-0 flex flex-col overflow-hidden"
@@ -205,6 +206,12 @@ export default function InsightPanel({ results, analyzing }: InsightPanelProps) 
 
       {/* Scrollable body */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+        {globalError && (
+          <div className="px-4 py-3 rounded-lg anim-fadeIn" style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.25)" }}>
+            <p className="text-xs font-semibold mb-0.5" style={{ color: "var(--red)" }}>Error</p>
+            <p className="text-xs" style={{ color: "var(--red)", opacity: 0.85 }}>{globalError}</p>
+          </div>
+        )}
         {analyzing ? (
           <>
             <SkeletonCard delay={0} />
