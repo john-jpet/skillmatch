@@ -14,7 +14,7 @@ export default function SkillPicker({ onAdd, existingSkills }: SkillPickerProps)
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    fetch("/skills.txt")
+    fetch(`${import.meta.env.BASE_URL}skills.txt`)
       .then(res => res.text())
       .then(text => {
         const skills = text.split("\n").map(s => s.trim()).filter(Boolean)
