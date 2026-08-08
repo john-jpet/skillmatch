@@ -13,9 +13,13 @@ injectSpeedInsights()
 const _savedTheme = localStorage.getItem('sm-theme') || 'dark'
 document.documentElement.setAttribute('data-theme', _savedTheme)
 
+// Deployed both standalone (root) and proxied under johnjpet.dev/skillmatch/ --
+// detect which one we're in so routes resolve against the right prefix.
+const basename = window.location.pathname.startsWith('/skillmatch') ? '/skillmatch' : '/'
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <App />
     </BrowserRouter>
   </StrictMode>,
